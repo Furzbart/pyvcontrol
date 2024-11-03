@@ -1,2 +1,9 @@
 /deploy_pi
 /tests/Monitor.log
+/bin
+/build
+/lib
+/lib64
+/pyvcontrol.egg-info
+/pyvenv.cfg
+/pyvcontrol/__pycache__

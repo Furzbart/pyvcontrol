@@ -50,7 +50,7 @@ class viControlException(Exception):
 class viControl:
     # class to connect to viControl heating directly via Optolink
     # only supports WO1C with protocol P300
-    def __init__(self, port='/dev/ttyUSB0'):
+    def __init__(self, port='/dev/vitoir0'):
         self.vs = viSerial(control_set, port)
         self.vs.connect()
         self.is_initialized = False
@@ -77,7 +77,7 @@ class viControl:
     def execute_write_command(self, command_name, value) -> viData:
         """ sends a write command and gets the response."""
         vc = viCommand(command_name)
-        vd = viData.create(vc.unit, value)
+        vd = viData.create(vc.type, value, unit=vc.unit)
         return self.execute_command(vc, 'write', payload=vd)
 
     @deprecated(version='1.3', reason="replaced by execute_write_command")
@@ -120,7 +120,7 @@ class viControl:
         self.vs.send(ctrlcode['acknowledge'])  # send acknowledge
 
         # return viData object from payload
-        return viData.create(vt.vicmd.unit, vt.payload)
+        return viData.create(vt.vicmd.type, vt.payload, unit=vt.vicmd.unit)
 
     @deprecated(version='1.3', reason="replaced by initialize_communication.")
     def initComm(self):

@@ -48,7 +48,7 @@ class viData(bytearray):
     # RT    : Return Type
     # FIXME: implemented all units -> create own classes
     # FIXME: Units für Temperatur, h, etc. erzeugen
-
+    unit = ''
     # units not implemented so far:
     unitset = {
         'CT': {'description': 'CycleTime', 'type': 'timer', 'signed': False, 'read_value_transform': 'non'},
@@ -78,9 +78,10 @@ class viData(bytearray):
         'DA': {'description': 'Date', 'type': 'date', 'signed': False, 'read_value_transform': 'non'},  # vito unit:
     }
 
-    def __init__(self, value):
+    def __init__(self, value, unit):
         """ to be overridden by subclass. subclass __init__ shall set default value for value and handle any extra parameters """
         super().__init__()
+        self.unit = unit
         if type(value) == bytes or type(value) == bytearray:
             self._create_from_raw(value)
         else:
@@ -103,7 +104,7 @@ class viData(bytearray):
         raise NotImplementedError
 
     @classmethod
-    def create(cls, datatype, *args):
+    def create(cls, datatype, *args, unit):
         # select data type object based on type
         # args are passed as such to the constructor of the function
         logging.debug(f'Data factory: request to produce Data type {datatype} with args {args}')
@@ -112,18 +113,19 @@ class viData(bytearray):
                            'ES': viDataES, 'F_E': viDataEnergy,
                            }
         if datatype in datatype_object.keys():
-            return datatype_object[datatype](*args)
+            # get data type
+            return datatype_object[datatype](*args, unit=unit)
         else:
             # if unit type is not implemented
             raise viDataException(f'Unit {datatype} not known')
-
+        
 
 # ----------------------------------------
 # Below are the class definitions for each unit
 
 class viDataBA(viData):
     # Betriebsart
-    unit = {'code': 'BA', 'description': 'Betriebsart', 'unit': ''}
+    # unit = {'code': 'BA', 'description': 'Betriebsart', 'unit': ''}
     # operating mode codes are hex numbers
     operatingmodes = {
         0x00: 'OFF',
@@ -131,9 +133,9 @@ class viDataBA(viData):
         0x02: 'HEATING_WW',
      }
 
-    def __init__(self, value=b'\x00'):
+    def __init__(self, value=b'\x00', unit=''):
         # sets operating mode (hex) based on value
-        super().__init__(value)
+        super().__init__(value, unit)
 
     def _create_from_value(self, opmode):
         if opmode in self.operatingmodes.values():
@@ -157,7 +159,7 @@ class viDataBA(viData):
 
 class viDataES(viData):
     # ERROR states
-    unit = {'code': 'ES', 'description': 'Error', 'unit': ''}
+    # unit = {'code': 'ES', 'description': 'Error', 'unit': ''}
     # error codes are hex numbers
     errorset = {
         0x00: 'Regelbetrieb (kein Fehler)',
@@ -227,9 +229,9 @@ class viDataES(viData):
         0xFF: 'Starkes Stoerfeld (EMV) in der Naehe oder interner Fehler',
     }
 
-    def __init__(self, value=b'\x00'):
+    def __init__(self, value=b'\x00', unit=''):
         # default is no error
-        super().__init__(value)
+        super().__init__(value, unit)
 
     # def __fromtype__(self,errstr):
     # Implementation does not make sense, an error will always be raised by the Viessmann unit
@@ -249,7 +251,7 @@ class viDataES(viData):
 
 class viDataDT(viData):
     # device types
-    unit = {'description': 'DeviceType', 'code': 'DT', 'unit': ''}  # vito unit: DT
+    # unit = {'description': 'DeviceType', 'code': 'DT', 'unit': ''}  # vito unit: DT
     devicetypes = {
         0x2098: 'V200KW2, Protokoll: KW2',
         0x2053: 'GWG_VBEM, Protokoll: GWG',
@@ -257,6 +259,7 @@ class viDataDT(viData):
         0x2094: 'V200KW1, Protokoll: KW2',
         0x209F: 'V200KO1B, Protokoll: P300, KW2',
         0x204D: 'V200WO1C, Protokoll: P300',
+	0x204C: 'Vitocal 200-A, Protokoll P300',
         0x204B: 'Vitocal 333G, Protokoll: P300',
         0x20B8: 'V333MW1, Protokoll: ',
         0x20A0: 'V100GC1, Protokoll: ',
@@ -268,13 +271,14 @@ class viDataDT(viData):
         0x2049: 'V200WO1,VBC700, Protokoll: ',
         0x2032: 'VBC550, Protokoll: ',
         0x2033: 'VBC550, Protokoll: ',
+	0x204c0419: 'Vitocal 200-A ???',
         0x0000: 'unknown'
     }
 
-    def __init__(self, value=b'\x00\x00'):
+    def __init__(self, value=b'\x00\x00', unit=''):
         # sets device name (hex code). Either give value as bytearray/bytes or as device name string
         # usually this class would be initialized without arguments
-        super().__init__(value)
+        super().__init__(value, unit)
 
     def _create_from_raw(self, value):
         # set raw value directly
@@ -299,12 +303,13 @@ class viDataDT(viData):
 
 class viDataIS10(viData):
     # IS10 - signed fixed-point integer, 1 decimal
-    unit = {'code': 'IS10', 'description': 'INT signed 10', 'unit': ''}
+    # unit = {'code': 'IS10', 'description': 'INT signed 10', 'unit': ''}
 
-    def __init__(self, value=b'\x00\x00', len=2):
+    def __init__(self, value=b'\x00\x00', len=2, unit=''):
         # sets int representation based on input value
         self.len = len  # length in bytes
-        super().__init__(value)
+        self.unit = unit
+        super().__init__(value, unit)
 
     def _create_from_value(self, value):
         # fixed-point number given
@@ -318,12 +323,12 @@ class viDataIS10(viData):
 
 class viDataIU10(viData):
     # IS10 - signed fixed-point integer, 1 decimal
-    unit = {'code': 'IU10', 'description': 'INT unsigned 10', 'unit': ''}
+    # unit = {'code': 'IU10', 'description': 'INT unsigned 10', 'unit': ''}
 
-    def __init__(self, value=b'\x00\x00', len=2):
+    def __init__(self, value=b'\x00\x00', len=2, unit=''):
         # sets int representation based on input value
         self.len = len  # length in bytes
-        super().__init__(value)
+        super().__init__(value, unit)
 
     def _create_from_value(self, value):
         # fixed-point number given
@@ -336,12 +341,12 @@ class viDataIU10(viData):
 
 class viDataIU3600(viData):
     # IU3600 - signed fixed-point integer, 1 decimal
-    unit = {'code': 'IS10', 'description': 'INT signed 10', 'unit': 'h'}
+    # unit = {'code': 'IS10', 'description': 'INT signed 10', 'unit': 'h'}
 
-    def __init__(self, value=b'\x00\x00', len=2):
+    def __init__(self, value=b'\x00\x00', len=2, unit=''):
         # sets int representation based on input value
         self.len = len  # length in bytes
-        super().__init__(value)
+        super().__init__(value, unit)
 
     def _create_from_value(self, value):
         # fixed-point number given
@@ -355,12 +360,12 @@ class viDataIU3600(viData):
 
 class viDataIUNON(viData):
     # IUNON - unsigned int
-    unit = {'code': 'IUNON', 'description': 'INT unsigned non', 'unit': ''},  # vito unit: UTI, CO
+    # unit = {'code': 'IUNON', 'description': 'INT unsigned non', 'unit': ''},  # vito unit: UTI, CO
 
-    def __init__(self, value=b'\x00\x00', len=2):
+    def __init__(self, value=b'\x00\x00', len=2, unit=''):
         # sets int representation based on input value
         self.len = len  # length in bytes
-        super().__init__(value)
+        super().__init__(value, unit)
 
     def _create_from_value(self, value):
         # fixed-point number given
@@ -372,7 +377,7 @@ class viDataIUNON(viData):
 
 
 class viDataRT(viData):
-    unit = {'code': 'RT', 'description': 'ReturnStatus', 'unit': ''}
+    # unit = {'code': 'RT', 'description': 'ReturnStatus', 'unit': ''}
     # operating mode codes are hex numbers
     returnstatus = {
         0x00: '0',
@@ -381,10 +386,10 @@ class viDataRT(viData):
         0xAA: 'Not OK'
     }
 
-    def __init__(self, value=b'\x00'):
+    def __init__(self, value=b'\x00', unit=''):
         # sets operating mode (hex) based on string opmode
         # if opmode is skipped defaults to 'undefiniert'
-        super().__init__(value)
+        super().__init__(value, unit)
 
     def _create_from_value(self, status):
         if status in self.returnstatus.values():
@@ -406,7 +411,7 @@ class viDataRT(viData):
 
 
 class viDataOO(viData):
-    unit = {'code': 'OO', 'description': 'OnOff', 'unit': ''}
+    # unit = {'code': 'OO', 'description': 'OnOff', 'unit': ''}
     # operating mode codes are hex numbers
     OnOff = {
         0x00: 'Off',
@@ -414,8 +419,8 @@ class viDataOO(viData):
         0x02: 'On',
     }
 
-    def __init__(self, value='Off'):
-        super().__init__(value)
+    def __init__(self, value='Off', unit=''):
+        super().__init__(value, unit)
 
     def _create_from_value(self, onoff):
         if onoff in self.OnOff.values():
@@ -443,10 +448,10 @@ HEATING_ENERGY_FACTOR = 0.1
 
 class viDataEnergy(viData):
     """ Energy-Type ... Return from Function-Call B800 """
-    unit = {'code': 'F_E', 'description': 'returns dictionary with energy data', 'unit': ''},
+    # unit = {'code': 'F_E', 'description': 'returns dictionary with energy data', 'unit': ''},
 
-    def __init__(self, value=bytes(16)):
-        super().__init__(value)
+    def __init__(self, value=bytes(16), unit=''):
+        super().__init__(value, unit)
 
     def _create_from_raw(self, value):
         super().extend(value)
