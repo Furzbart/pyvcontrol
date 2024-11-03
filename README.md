@@ -16,13 +16,25 @@ Neuentwicklung basierend  auf
 Motivation:
 - Python-Modul um direkt auf die Viessmann-Heizung zugreifen zu können (ohne Umweg über vcontrold)
 
-Einschränkungen/known issues:
- - Die Parameter (z.B. Kommandodefinitionen) sind Teil der Klassen und nicht mehr zentral abgelegt.
-   Nachteil ist die geringere Anwenderfreundlichkeit - Konfigurationen sollten eigentlich vom Code getrennt sein
- - nur V200WO1C/P300 implementiert. 
+Einschränkungen/known issues/ToDos:
+ - Tests not up2date after refactorings
+ - Some code was added while drunk
+ - Data types need work and should be externalized (maybe?)
+ - Only Vitocal 200-A implemented, however should be easily exchangable
+ - API documentation (Swagger)
+ - Configuration of adapter device (`dev/tty/vitoir0`) here, but should be "modular" in code instead of relying on system symlinks
 
-Beispielcode:
-- testViessmann.py: führt einen Lesezugriff für alle definierten Kommandos durch.
+Usage:
+ - Set up Optolink device to use `dev/tty/vitoir0`. How to do that can be found in the vcontrold wiki.
+ - In root directory run `pip install .` to install package
+    - If you use centrally managed python libraries it's best to use virtual environments (`venv`)
+    - If you plan on adding/developing, best to use `pip install -e .`. Makes the package editable without reinstalling after each change.
+  - In the test directory, use `python testViessmann.py` to test all commands in shell
+  - Run `python viAPI.py` to run a bootleg `flask` REST API
+    - API can then be called on port `5000`
+    - API endpoint docs to follow
+
+
 
 [vcontrold]: https://github.com/openv (vcontrold)
 [SHNGpyPlugin]: https://github.com/sisamiwe/myplugins/tree/master/viessmann (SmartHomeNG python Plugin)
