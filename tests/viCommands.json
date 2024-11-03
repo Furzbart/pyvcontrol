@@ -1,0 +1,340 @@
+[
+    {
+        "name": "Aussentemperatur",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "0101",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "WWTemperatur_oben",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "010d",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "WWSollTemperatur",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "6000",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "VorlauftempSollHK1",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "1800",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "VorlauftempSek",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "0105",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "RuecklauftempSek",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "0106",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "Sekundaerpumpe",
+        "unit": "%",
+        "measurement": "percentage",
+        "address": "B421",
+        "length": 2,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "VorlauftempPrim",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "0103",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "RuecklauftempPrim",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "0104",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "FaktorEnergiebilanz",
+        "address": "163F",
+        "length": 1,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "Heizwaerme",
+        "unit": "kWh",
+        "measurement": "energy",
+        "address": "1640",
+        "length": 4,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "Heizenergie",
+        "unit": "kWh",
+        "measurement": "energy",
+        "address": "1660",
+        "length": 4,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "WWwaerme12M",
+        "unit": "kWh",
+        "measurement": "energy",
+        "address": "1650",
+        "length": 4,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "WWenergie12M",
+        "unit": "kWh",
+        "measurement": "energy",
+        "address": "1670",
+        "length": 4,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "Primaerquelle",
+        "unit": "%",
+        "measurement": "percentage",
+        "address": "B420",
+        "length": 2,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "Warmwasserpumpe",
+        "unit": "%",
+        "measurement": "percentage",
+        "address": "B422",
+        "length": 2,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "Verdichter",
+        "unit": "%",
+        "measurement": "percentage",
+        "address": "B423",
+        "length": 4,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "LuefterGeschw",
+        "unit": "u/min",
+        "measurement": "speed",
+        "address": "1A53",
+        "length": 1,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "VerdichterGeschw",
+        "unit": "%",
+        "measurement": "percentage",
+        "address": "1A54",
+        "length": 1,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "LuefterGeschw2",
+        "unit": "u/min",
+        "measurement": "speed",
+        "address": "1A52",
+        "length": 1,
+        "data_type": "IUNON",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "DruckSauggas",
+        "unit": "bar",
+        "measurement": "pressure",
+        "address": "B410",
+        "length": 3,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "DruckHeissgas",
+        "unit": "bar",
+        "measurement": "pressure",
+        "address": "B411",
+        "length": 3,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "TempSauggas",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "B409",
+        "length": 3,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "TempHeissgas",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "B40A",
+        "length": 3,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "Jahresarbeitszahl",
+        "address": "1680",
+        "length": 1,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "JahresarbeitszahlHeizen",
+        "address": "1681",
+        "length": 1,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "JahresarbeitszahlWW",
+        "address": "1682",
+        "length": 1,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "Betriebsmodus",
+        "address": "B000",
+        "length": 1,
+        "data_type": "BA",
+        "access_mode": "RW",
+        "active": true
+    },
+    {
+        "name": "WWeinmal",
+        "address": "B020",
+        "length": 1,
+        "data_type": "OO",
+        "access_mode": "RW",
+        "active": true
+    },
+    {
+        "name": "SolltempWarmwasser",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "6000",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "RW",
+        "min_value": 10,
+        "max_value": 60,
+        "active": true
+    },
+    {
+        "name": "RaumtempSollHK1",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "2000",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "HKLNeigung",
+        "address": "2007",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "HKLNiveau",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "2006",
+        "length": 2,
+        "data_type": "IS10",
+        "access_mode": "R",
+        "active": true
+    },
+    {
+        "name": "Hysterese_Vorlauf_lowerLimit",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "7304",
+        "length": 2,
+        "data_type": "IU10",
+        "access_mode": "RW",
+        "active": true
+    },
+    {
+        "name": "Hysterese_Vorlauf_upperLimit",
+        "unit": "°C",
+        "measurement": "temperature",
+        "address": "7313",
+        "length": 2,
+        "data_type": "IU10",
+        "access_mode": "RW",
+        "active": true
+    }
+]

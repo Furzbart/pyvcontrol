@@ -18,7 +18,8 @@
 # ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
 
 import logging
-from pyvcontrol.viCommand import viCommand
+from .viCommand import viCommand
+from .viCommandSet import COMMAND_SET
 
 
 class viTelegramException(Exception):
@@ -127,7 +128,7 @@ class viTelegram(bytearray):
         # 1 - mode
         # x - command
         # 1 - checksum
-        return 4 + self.vicmd.response_length(self.telegram_mode) + 1
+        return 4 + self.vicmd.calc_response_length(self.telegram_mode) + 1
 
     @property
     def telegram_mode(self):
@@ -157,7 +158,7 @@ class viTelegram(bytearray):
         header = b[0:4]
         logging.debug(
             f'Header: {header.hex()}, tType={header[2:3].hex()}, tMode={header[3:4].hex()}, payload={b[7:-1].hex()}')
-        vicmd = viCommand._from_bytes(b[4:6])
+        vicmd = COMMAND_SET.get_command_from_bytes(b[4:6])
         vt = viTelegram(vicmd, tType=header[2:3], tMode=header[3:4], payload=b[7:-1])
         return vt
 

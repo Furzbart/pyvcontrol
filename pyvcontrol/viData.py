@@ -47,7 +47,7 @@ class viData(bytearray):
     # OO    : On Off,
     # RT    : Return Type
     # FIXME: implemented all units -> create own classes
-    # FIXME: Units für Temperatur, h, etc. erzeugen
+    # FIXED: Units für Temperatur, h, etc. erzeugen - kommen jetzt direkt im Command mit - nicht immer 1:1 pro data type mappable
     unit = ''
     # units not implemented so far:
     unitset = {

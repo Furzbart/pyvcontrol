@@ -21,7 +21,7 @@
 
 from flask import Flask, jsonify
 from pyvcontrol.viControl import viControl
-from pyvcontrol.viCommand import viCommand
+from pyvcontrol.viCommandSet import COMMAND_SET
 
 app = Flask(__name__)
 basepath = '/api/vcontrol/'
@@ -31,19 +31,6 @@ error_cmd_not_found = {
     'status': 'error',
     'http_code': 404
 }
-
-TYPES = {
-    '°C': 'temperature',
-    'bar': 'pressure',
-    '%': 'percentage',
-    '': 'NONE'
-}
-
-def get_type_from_unit(unit) -> str:
-    if (unit in TYPES.keys):
-        return TYPES[unit]
-    return 'NONE'
-
 
 @app.route(f'{basepath}status', methods=['GET'])
 def get_status():
@@ -62,14 +49,13 @@ def get_all_commands():
         vo.initialize_communication()
 
         reponse_json = {}
-        for cmd in viCommand.command_set.keys():
+        for cmd in COMMAND_SET.get_all_commands().keys():
                 if cmd != 'Energiebilanz':
                     vd = vo.execute_read_command(cmd)
                     reponse_json[cmd] = {
                         'command':cmd,
                         'raw':vd.value,
                         'unit':vd.unit,
-                        #'type': get_type_from_unit(vd.unit), -> fixme: draft for interfacing with HA
                         'value':f'{vd.value}{vd.unit}'
                     }
         return jsonify(reponse_json), 200
@@ -78,21 +64,13 @@ def get_all_commands():
 
 @app.route(f'{basepath}commands', methods=['GET'])
 def get_command_list():
-    res = {}
-    for cmd, props in viCommand.command_set.items():
-        res[cmd] = {
-            'name':cmd,
-            'unit':props.get('UNIT', 'NO UNIT')
-        } 
-
-    # cmds = list(viCommand.command_set.keys())
-    return jsonify({'Commands': res}), 200
+    return jsonify(COMMAND_SET.get_command_set()), 200
 
 
 @app.route(f'{basepath}command/<command>', methods=['GET'])
 def get_command(command):
     try:
-        if not command in viCommand.command_set.keys():
+        if not command in COMMAND_SET.get_all_commands().keys():
             return jsonify(error_cmd_not_found), 404
         vo = viControl()
         vo.initialize_communication()

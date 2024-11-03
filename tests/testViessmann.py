@@ -22,7 +22,7 @@
 import unittest
 import logging
 from pyvcontrol.viControl import viControl
-from pyvcontrol.viCommand import viCommand
+from pyvcontrol.viCommandSet import COMMAND_SET
 
 
 class MyTestCase(unittest.TestCase):
@@ -30,7 +30,7 @@ class MyTestCase(unittest.TestCase):
         vo = viControl()
         vo.initialize_communication()
 
-        for cmd in viCommand.command_set.keys():
+        for cmd in COMMAND_SET.get_all_commands().keys():
             if cmd != 'Energiebilanz':
                 vd = vo.execute_read_command(cmd)
                 print(f'{cmd} : {vd.value} {vd.unit}')
