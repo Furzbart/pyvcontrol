@@ -19,7 +19,7 @@
 
 import logging
 from .viCommand import viCommand
-from .viCommandSet import COMMAND_SET
+from .viConfig import VC_CONFIG
 
 
 class viTelegramException(Exception):
@@ -158,7 +158,7 @@ class viTelegram(bytearray):
         header = b[0:4]
         logging.debug(
             f'Header: {header.hex()}, tType={header[2:3].hex()}, tMode={header[3:4].hex()}, payload={b[7:-1].hex()}')
-        vicmd = COMMAND_SET.get_command_from_bytes(b[4:6])
+        vicmd = VC_CONFIG.get_command_from_bytes(b[4:6])
         vt = viTelegram(vicmd, tType=header[2:3], tMode=header[3:4], payload=b[7:-1])
         return vt
 

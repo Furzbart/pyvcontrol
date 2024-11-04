@@ -20,7 +20,7 @@
 
 from .viTelegram import viTelegram
 from .viData import viData
-from .viCommandSet import COMMAND_SET
+from .viConfig import VC_CONFIG
 import logging
 import serial
 from threading import Lock
@@ -49,9 +49,8 @@ class viControlException(Exception):
 
 class viControl:
     # class to connect to viControl heating directly via Optolink
-    # only supports WO1C with protocol P300
-    def __init__(self, port='/dev/vitoir0'):
-        self.vs = viSerial(control_set, port)
+    def __init__(self):
+        self.vs = viSerial(control_set, VC_CONFIG.get_device())
         self.vs.connect()
         self.is_initialized = False
 
@@ -61,19 +60,19 @@ class viControl:
 
     def execute_read_command(self, command_name) -> viData:
         """ sends a read command and gets the response."""
-        vc = COMMAND_SET.get_command(command_name)
+        vc = VC_CONFIG.get_command(command_name)
         return self.execute_command(vc, 'read')
 
     def execute_write_command(self, command_name, value) -> viData:
         """ sends a write command and gets the response."""
-        vc = COMMAND_SET.get_command(command_name)
+        vc = VC_CONFIG.get_command(command_name)
         vd = viData.create(vc.type, value, unit=vc.unit)
         return self.execute_command(vc, 'write', payload=vd)
 
     def execute_function_call(self, command_name, *function_args) -> viData:
         """ sends a function call command and gets response."""
         payload = bytearray((len(function_args), *function_args))
-        vc = COMMAND_SET.get_command(command_name)
+        vc = VC_CONFIG.get_command(command_name)
         return self.execute_command(vc, 'call', payload=payload)
 
     def execute_command(self, vc, access_mode, payload=bytes(0)) -> viData:

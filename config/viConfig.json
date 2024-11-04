@@ -1,0 +1,6 @@
+{
+    "optolink_device": "/dev/vitoir0",
+    "api_port": 5000,
+    "api_basepath": "/api/vcontrol/",
+    "api_host":"0.0.0.0"
+}

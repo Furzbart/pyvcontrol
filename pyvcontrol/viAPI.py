@@ -21,10 +21,10 @@
 
 from flask import Flask, jsonify
 from pyvcontrol.viControl import viControl
-from pyvcontrol.viCommandSet import COMMAND_SET
+from pyvcontrol.viConfig import VC_CONFIG
 
 app = Flask(__name__)
-basepath = '/api/vcontrol/'
+basepath = VC_CONFIG.get_api_basepath()
 
 error_cmd_not_found = {
     'message': 'Command not found!',
@@ -49,7 +49,7 @@ def get_all_commands():
         vo.initialize_communication()
 
         reponse_json = {}
-        for cmd in COMMAND_SET.get_all_commands().keys():
+        for cmd in VC_CONFIG.get_commands().keys():
                 if cmd != 'Energiebilanz':
                     vd = vo.execute_read_command(cmd)
                     reponse_json[cmd] = {
@@ -64,13 +64,13 @@ def get_all_commands():
 
 @app.route(f'{basepath}commands', methods=['GET'])
 def get_command_list():
-    return jsonify(COMMAND_SET.get_command_set()), 200
+    return jsonify(VC_CONFIG.get_command_set()), 200
 
 
 @app.route(f'{basepath}command/<command>', methods=['GET'])
 def get_command(command):
     try:
-        if not command in COMMAND_SET.get_all_commands().keys():
+        if not command in VC_CONFIG.get_commands().keys():
             return jsonify(error_cmd_not_found), 404
         vo = viControl()
         vo.initialize_communication()
@@ -88,4 +88,4 @@ def get_command(command):
 
 if __name__ == "__main__":
     #app.run(debug=True)
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host=VC_CONFIG.get_api_host(), port=VC_CONFIG.get_api_port())
