@@ -22,16 +22,14 @@ Einschränkungen/known issues/ToDos:
  - Data types need work and should be externalized (maybe?)
  - Only Vitocal 200-A implemented, however should be easily exchangable
  - API documentation (Swagger)
- - Configuration of adapter device (`dev/tty/vitoir0`) here, but should be "modular" in code instead of relying on system symlinks
 
 Usage:
- - Set up Optolink device to use `dev/tty/vitoir0`. How to do that can be found in the vcontrold wiki.
+ - Set up optolink device and API parameters in `config/viConfig.json`
  - In root directory run `pip install .` to install package
     - If you use centrally managed python libraries it's best to use virtual environments (`venv`)
     - If you plan on adding/developing, best to use `pip install -e .`. Makes the package editable without reinstalling after each change.
   - In the test directory, use `python testViessmann.py` to test all commands in shell
   - Run `python viAPI.py` to run a bootleg `flask` REST API
-    - API can then be called on port `5000`
     - API endpoint docs to follow
 
 
