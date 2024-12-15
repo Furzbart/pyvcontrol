@@ -35,6 +35,7 @@ class viConfig:
         self._cmds_json = json.load(open(_cmds_path, 'r'))
         self._commands = {c["name"]: viCommand(**{k: v for k, v in c.items() if k != "active"}) for c in self._cmds_json if c.get("active")}
         self._config = json.load(open(_config_path, 'r'))
+        self.cmds = self._commands
 
     def get_command_set(self):
         return self._cmds_json

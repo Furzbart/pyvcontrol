@@ -46,7 +46,7 @@ class viData(bytearray):
     # IU3600: Int unsigned, base 3600 (i.e. hours & seconds)
     # OO    : On Off,
     # RT    : Return Type
-    # FIXME: implemented all units -> create own classes
+    # FIXED: implemented units -> created own classes (inline)
     # FIXED: Units für Temperatur, h, etc. erzeugen - kommen jetzt direkt im Command mit - nicht immer 1:1 pro data type mappable
     unit = ''
     # units not implemented so far:

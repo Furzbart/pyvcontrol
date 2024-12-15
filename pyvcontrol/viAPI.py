@@ -53,10 +53,10 @@ def get_all_commands():
                 if cmd != 'Energiebilanz':
                     vd = vo.execute_read_command(cmd)
                     reponse_json[cmd] = {
-                        'command':cmd,
-                        'raw':vd.value,
-                        'unit':vd.unit,
-                        'value':f'{vd.value}{vd.unit}'
+                	'command':cmd,
+               	 	'raw':vd.value,
+                	'unit':vd.unit,
+                	'value':f'{vd.value}{vd.unit}'
                     }
         return jsonify(reponse_json), 200
     except Exception as ex:
